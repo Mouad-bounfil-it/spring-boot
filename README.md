@@ -1014,7 +1014,7 @@ Mise en place de l'héritage pour Compte et Operation avec polymorphisme.
 - Définition de `@DiscriminatorColumn` et `@DiscriminatorValue`
 - Gestion polymorphique dans le service avec `instanceof`
 
-### 12.5 Problème de Séquences PostgreSQL ⭐ NOUVEAU
+### 12.5 Problème de Séquences PostgreSQL
 
 **Problème :**  
 Erreur lors de l'insertion de nouvelles opérations via le formulaire web :
