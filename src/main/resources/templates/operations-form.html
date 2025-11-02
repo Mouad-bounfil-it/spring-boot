@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Effectuer une Opération</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b border-zinc-200">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl font-bold text-zinc-900">🏦 Gestion Banque</h1>
+                <div class="flex space-x-4">
+                    <a href="/banque" class="px-4 py-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-md">Accueil</a>
+                    <a href="/operations" class="px-4 py-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-md">Consultation</a>
+                    <a href="/operations-form" class="px-4 py-2 text-sm font-medium text-zinc-900 bg-zinc-100 rounded-md">Effectuer Opération</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <h2 class="text-2xl font-bold text-zinc-900 mb-6">Effectuer une Opération Bancaire</h2>
+
+        <!-- Success/Error Messages -->
+        <div th:if="${message}" class="mb-6 p-4 rounded-lg" th:classappend="${success} ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'">
+            <p class="text-sm font-medium" th:classappend="${success} ? 'text-green-800' : 'text-red-800'" th:text="${message}"></p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Versement Form -->
+            <div class="bg-white rounded-lg shadow-sm border border-zinc-200 p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-zinc-900">Versement</h3>
+                </div>
+                
+                <form action="/operations-form/versement" method="post">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="versement-compte" class="block text-sm font-medium text-zinc-700 mb-2">
+                                Compte
+                            </label>
+                            <select id="versement-compte" name="codeCompte" required
+                                    class="w-full px-3 py-2 bg-white border border-zinc-300 rounded-md text-zinc-900 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                <option value="">-- Sélectionner --</option>
+                                <option th:each="c : ${comptes}" 
+                                        th:value="${c.numCompte}" 
+                                        th:text="${c.numCompte + ' - ' + c.client.nomClient}">
+                                    CC001 - Client
+                                </option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="versement-montant" class="block text-sm font-medium text-zinc-700 mb-2">
+                                Montant (DH)
+                            </label>
+                            <input type="number" step="0.01" id="versement-montant" name="montant" required
+                                   class="w-full px-3 py-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                        </div>
+
+                        <div>
+                            <label for="versement-employe" class="block text-sm font-medium text-zinc-700 mb-2">
+                                Employé
+                            </label>
+                            <select id="versement-employe" name="codeEmploye" required
+                                    class="w-full px-3 py-2 bg-white border border-zinc-300 rounded-md text-zinc-900 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                <option value="">-- Sélectionner --</option>
+                                <option th:each="e : ${employes}" 
+                                        th:value="${e.codeEmploye}" 
+                                        th:text="${e.nomEmploye}">
+                                    Employé
+                                </option>
+                            </select>
+                        </div>
+
+                        <button type="submit" 
+                                class="w-full px-4 py-2 bg-green-600 text-white font-medium rounded-md hover:bg-green-700 transition-colors">
+                            Effectuer le Versement
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Retrait Form -->
+            <div class="bg-white rounded-lg shadow-sm border border-zinc-200 p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-zinc-900">Retrait</h3>
+                </div>
+                
+                <form action="/operations-form/retrait" method="post">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="retrait-compte" class="block text-sm font-medium text-zinc-700 mb-2">
+                                Compte
+                            </label>
+                            <select id="retrait-compte" name="codeCompte" required
+                                    class="w-full px-3 py-2 bg-white border border-zinc-300 rounded-md text-zinc-900 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                <option value="">-- Sélectionner --</option>
+                                <option th:each="c : ${comptes}" 
+                                        th:value="${c.numCompte}" 
+                                        th:text="${c.numCompte + ' - ' + c.client.nomClient + ' (' + #numbers.formatDecimal(c.solde, 1, 2) + ' DH)'}">
+                                    CC001 - Client (1000.00 DH)
+                                </option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="retrait-montant" class="block text-sm font-medium text-zinc-700 mb-2">
+                                Montant (DH)
+                            </label>
+                            <input type="number" step="0.01" id="retrait-montant" name="montant" required
+                                   class="w-full px-3 py-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                        </div>
+
+                        <div>
+                            <label for="retrait-employe" class="block text-sm font-medium text-zinc-700 mb-2">
+                                Employé
+                            </label>
+                            <select id="retrait-employe" name="codeEmploye" required
+                                    class="w-full px-3 py-2 bg-white border border-zinc-300 rounded-md text-zinc-900 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                <option value="">-- Sélectionner --</option>
+                                <option th:each="e : ${employes}" 
+                                        th:value="${e.codeEmploye}" 
+                                        th:text="${e.nomEmploye}">
+                                    Employé
+                                </option>
+                            </select>
+                        </div>
+
+                        <button type="submit" 
+                                class="w-full px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition-colors">
+                            Effectuer le Retrait
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Virement Form -->
+            <div class="bg-white rounded-lg shadow-sm border border-zinc-200 p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-zinc-900">Virement</h3>
+                </div>
+                
+                <form action="/operations-form/virement" method="post">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="virement-compte1" class="block text-sm font-medium text-zinc-700 mb-2">
+                                Compte Source
+                            </label>
+                            <select id="virement-compte1" name="codeCompte1" required
+                                    class="w-full px-3 py-2 bg-white border border-zinc-300 rounded-md text-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">-- Sélectionner --</option>
+                                <option th:each="c : ${comptes}" 
+                                        th:value="${c.numCompte}" 
+                                        th:text="${c.numCompte + ' (' + #numbers.formatDecimal(c.solde, 1, 2) + ' DH)'}">
+                                    CC001 (1000.00 DH)
+                                </option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="virement-compte2" class="block text-sm font-medium text-zinc-700 mb-2">
+                                Compte Destination
+                            </label>
+                            <select id="virement-compte2" name="codeCompte2" required
+                                    class="w-full px-3 py-2 bg-white border border-zinc-300 rounded-md text-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">-- Sélectionner --</option>
+                                <option th:each="c : ${comptes}" 
+                                        th:value="${c.numCompte}" 
+                                        th:text="${c.numCompte + ' - ' + c.client.nomClient}">
+                                    CC002 - Client
+                                </option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="virement-montant" class="block text-sm font-medium text-zinc-700 mb-2">
+                                Montant (DH)
+                            </label>
+                            <input type="number" step="0.01" id="virement-montant" name="montant" required
+                                   class="w-full px-3 py-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="virement-employe" class="block text-sm font-medium text-zinc-700 mb-2">
+                                Employé
+                            </label>
+                            <select id="virement-employe" name="codeEmploye" required
+                                    class="w-full px-3 py-2 bg-white border border-zinc-300 rounded-md text-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">-- Sélectionner --</option>
+                                <option th:each="e : ${employes}" 
+                                        th:value="${e.codeEmploye}" 
+                                        th:text="${e.nomEmploye}">
+                                    Employé
+                                </option>
+                            </select>
+                        </div>
+
+                        <button type="submit" 
+                                class="w-full px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors">
+                            Effectuer le Virement
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Info Box -->
+        <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <div class="flex items-start">
+                <svg class="w-6 h-6 text-blue-600 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                    <h3 class="text-sm font-semibold text-blue-900 mb-1">Règles des Opérations</h3>
+                    <ul class="text-sm text-blue-700 space-y-1">
+                        <li><strong>Versement :</strong> Augmente le solde du compte</li>
+                        <li><strong>Retrait :</strong> Diminue le solde (découvert autorisé pour comptes courants)</li>
+                        <li><strong>Virement :</strong> Transfert entre deux comptes</li>
+                        <li><strong>Comptes Épargne :</strong> Le solde ne peut pas être négatif</li>
+                        <li><strong>Comptes Courants :</strong> Découvert autorisé selon limite définie</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-12 bg-white border-t border-zinc-200">
+        <div class="container mx-auto px-4 py-6 text-center text-sm text-zinc-600">
+            <p>© 2025 Gestion Banque - Opérations Bancaires</p>
+        </div>
+    </footer>
+</body>
+</html>
+
