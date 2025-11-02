@@ -1183,7 +1183,7 @@ psql -U postgres -d gestion_banque -f database/test-data.sql
 ### B. URLs Importantes
 
 - **Page d'accueil** : `http://localhost:8080/banque`
-- **Effectuer opérations** : `http://localhost:8080/operations-form` ⭐
+- **Effectuer opérations** : `http://localhost:8080/operations-form`
 - **Consulter opérations** : `http://localhost:8080/operations`
 - **Détails compte** : `http://localhost:8080/comptes/{code}`
 - **Swagger UI** : `http://localhost:8080/swagger-ui.html`
