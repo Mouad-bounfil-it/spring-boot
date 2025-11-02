@@ -1159,7 +1159,7 @@ L'application de gestion bancaire développée est **pleinement fonctionnelle** 
 
 
 
-## 📚 ANNEXES
+## ANNEXES
 
 ### A. Commandes Principales
 
